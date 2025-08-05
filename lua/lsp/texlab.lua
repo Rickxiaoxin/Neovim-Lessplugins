@@ -192,7 +192,13 @@ vim.lsp.config('texlab', {
       formatterLineLength = 80,
     },
   },
-  on_attach = function(_, buf)
+  on_attach = function(client, buf)
+    vim.lsp.completion.enable(true, client.id, buf, {
+      autotrigger = true,
+      convert = function(item)
+        return { abbr = item.label:gsub('%b()', '') }
+      end,
+    })
     vim.api.nvim_buf_create_user_command(buf, 'LspTexlabBuild', client_with_fn(buf_build), {
       desc = 'Build the current buffer',
     })
@@ -217,11 +223,5 @@ vim.lsp.config('texlab', {
     vim.api.nvim_buf_create_user_command(buf, 'LspTexlabChangeEnvironment', client_with_fn(buf_change_env), {
       desc = 'Change the environment at current position',
     })
-        vim.lsp.completion.enable(true, client.id, bufnr, {
-          autotrigger = true,
-          convert = function(item)
-            return { abbr = item.label:gsub('%b()', '') }
-          end,
-        })
   end,
 })

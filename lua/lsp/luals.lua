@@ -67,5 +67,3 @@ vim.lsp.config('luals', {
   }
 })
 
--- [[ LSP Enable ]]
-vim.lsp.enable({ 'luals' })
