@@ -11,14 +11,14 @@ vim.lsp.config('luals', {
     'selene.yml',
     '.git',
   },
-  on_attach = function(client, bufnr)
-    vim.lsp.completion.enable(true, client.id, bufnr, {
-      autotrigger = true,
-      convert = function(item)
-        return { abbr = item.label:gsub('%b()', '') }
-      end,
-    })
-  end,
+  -- on_attach = function(client, bufnr)
+  --   vim.lsp.completion.enable(true, client.id, bufnr, {
+  --     autotrigger = true,
+  --     convert = function(item)
+  --       return { abbr = item.label:gsub('%b()', '') }
+  --     end,
+  --   })
+  -- end,
   on_init = function(client)
     if client.workspace_folders then
       local path = client.workspace_folders[1].name

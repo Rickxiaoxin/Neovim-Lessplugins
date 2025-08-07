@@ -58,7 +58,7 @@ local function buf_cancel_build(client, bufnr)
       command = 'texlab.cancelBuild',
     }, { bufnr = bufnr })
   end
-  vim.lsp.buf.execute_command { command = 'texlab.cancelBuild' }
+  client:exec_cmd { command = 'texlab.cancelBuild' }
   vim.notify('Build cancelled', vim.log.levels.INFO)
 end
 
@@ -92,7 +92,7 @@ local function command_factory(cmd)
       end)
     end
 
-    vim.lsp.buf.execute_command {
+    client:exec_cmd {
       command = cmd_tbl[cmd],
       arguments = { { uri = vim.uri_from_bufnr(bufnr) } },
     }
@@ -149,7 +149,7 @@ local function buf_change_env(client, bufnr)
     }, { bufnr = bufnr })
   end
 
-  vim.lsp.buf.execute_command {
+  client:exec_cmd {
     command = 'texlab.changeEnvironment',
     arguments = {
       {
@@ -193,12 +193,12 @@ vim.lsp.config('texlab', {
     },
   },
   on_attach = function(client, buf)
-    vim.lsp.completion.enable(true, client.id, buf, {
-      autotrigger = true,
-      convert = function(item)
-        return { abbr = item.label:gsub('%b()', '') }
-      end,
-    })
+    -- vim.lsp.completion.enable(true, client.id, buf, {
+    --   autotrigger = true,
+    --   convert = function(item)
+    --     return { abbr = item.label:gsub('%b()', '') }
+    --   end,
+    -- })
     vim.api.nvim_buf_create_user_command(buf, 'LspTexlabBuild', client_with_fn(buf_build), {
       desc = 'Build the current buffer',
     })
